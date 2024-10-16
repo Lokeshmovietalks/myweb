@@ -8,7 +8,7 @@ pipeline {
     stage("Maven Build"){
       steps{
         sh "mvn clean package"
-        sh "mv myweb*.war myweb.war"
+        sh 'mv myweb*.war myweb.war'
       }
     }
     stage("Deploy To Dev"){
