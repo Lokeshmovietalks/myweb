@@ -1,18 +1,19 @@
-@Library("mylibs") _
+@Library("sharedlibs") _
 pipeline {
   agent any
   tools {
-    maven 'maven2'
+    maven 'maven3'
   }
   stages{
     stage("Maven Build"){
       steps{
         sh "mvn clean package"
+        sh "mv myweb*.war myweb.war"
       }
     }
     stage("Deploy To Dev"){
       steps{
-        tomcatDeploy("tomcat-dev","ec2-user",["172.31.13.89","172.31.13.89"])
+        tomcat("tomcat-dev","myweb","ec2-user",172.31.2.110)
       }
     }
   }
