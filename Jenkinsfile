@@ -1,19 +1,21 @@
-@Library("sharedlib") _
-pipeline {
+@Library ('sharedlib') _
+pipeline{
   agent any
-  tools {
-    maven 'maven3'
-  }
   stages{
+    stage("SCM Checkout"){
+        steps{
+            git 'https://github.com/Lokeshmovietalks/myweb'
+        }
+    }
     stage("Maven Build"){
       steps{
-        sh "mvn clean package"
+        sh 'mvn clean package'
         sh 'mv target/myweb*.war target/myweb.war'
       }
     }
-    stage("Deploy To Dev"){
+    stage("Tomcat Deploy"){
       steps{
-        tomcat("tomcat-dev","myweb","ec2-user","172.31.2.110")
+        tomcat("tomcat-server","myweb","ec2-user","172.31.2.110")
       }
     }
   }
