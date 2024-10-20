@@ -1,24 +1,23 @@
-@Library('app-libs') _
+@Library('sharedlib') _
 pipeline{
     agent any
     stages{
-        
+        stage("SCM build"){
+            steps{
+                git 'https://github.com/Lokeshmovietalks/myweb'
+            }
+        }
         stage("Maven Build"){
             steps{
                 sh 'mvn clean package'
-                sh 'mv target/myweb*.war target/myweb.war'
             }
         }
-        
-        stage("Deploy to Tomcat Development"){
+        stage("Nexus Deployment"){
             steps{
-               tomcatDeploy("172.31.46.32","tomcat-dev","myweb")
+                script{
+                    tomcat.nexus("myweb","Nexus")
+                }
             }
         }
-    }
-    post {
-      always {
-        cleanWs()
-      }
     }
 }
