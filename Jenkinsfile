@@ -2,11 +2,6 @@
 pipeline{
     agent any
     stages{
-        stage("SCM build"){
-            steps{
-                git 'https://github.com/Lokeshmovietalks/myweb'
-            }
-        }
         stage("Maven Build"){
             steps{
                 sh 'mvn clean package'
